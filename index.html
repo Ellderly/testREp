@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="assets/css/intlTelInput.min.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
+
+		<style>
+			#phone_no_code-error,
+			#last-error,
+			#name-error,
+			#phone-error,
+			#email-error {
+				display: none !important;
+			}
+
+			input.valid {
+				border: 2px solid green !important;
+				background: url(assets/img/check.svg) no-repeat 98% center !important;
+				background-size: 5% !important;
+			}
+
+			input.error {
+				border: 2px solid red !important;
+				background: url(assets/img/times.svg) no-repeat 98% center !important;
+				background-size: 5% !important;
+			}
+		</style>
+		<style>
+			/* Общий стиль формы */
+			form {
+				max-width: 500px; /* Максимальная ширина формы */
+				margin: 50px auto; /* Центрирование формы */
+				padding: 20px; /* Внутренний отступ */
+				background-color: #f2f2f2; /* Фон формы */
+				border-radius: 10px; /* Скругление углов */
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень вокруг формы */
+			}
+
+			/* Стиль для текстовых полей ввода */
+			form input[type='text'],
+			form input[type='email'],
+			form input[type='tel'] {
+				width: 100%; /* Ширина на всю доступную ширину */
+				padding: 10px; /* Внутренний отступ */
+				margin-bottom: 20px; /* Отступ снизу */
+				border: 1px solid #ddd; /* Тонкая граница */
+				border-radius: 5px; /* Скругление углов */
+				box-sizing: border-box; /* Размер включает в себя padding и border */
+			}
+
+			/* Стиль для кнопки */
+			form .button {
+				width: 100%; /* Ширина на всю доступную ширину */
+				padding: 10px; /* Внутренний отступ */
+				background-color: #4caf50; /* Зелёный фон */
+				color: white; /* Белый цвет текста */
+				border: none; /* Без границы */
+				border-radius: 5px; /* Скругление углов */
+				cursor: pointer; /* Курсор в виде указателя */
+				transition: background-color 0.3s; /* Плавный переход цвета фона */
+			}
+
+			/* Стиль для кнопки при наведении */
+			form .button:hover {
+				background-color: #45a049; /* Затемнённый зелёный фон при наведении */
+			}
+
+			/* Стиль для изображения внутри кнопки */
+			form .button img {
+				vertical-align: middle; /* Выравнивание по вертикали */
+				margin-left: 10px; /* Отступ слева */
+			}
+		</style>
+		<title>Document</title>
+	</head>
+	<body>
+		<form class="myForm">
+			<input type="text" name="name" placeholder="name" />
+			<input type="text" name="last" placeholder="last" />
+			<input type="tel" name="phone_no_code" placeholder="phone" />
+			<button type="submit" class="button">
+				<span>Отправить</span>
+				<img
+					style="display: none; width: 20px; height: auto; margin: 0 auto"
+					src="assets/img/spinner.gif"
+					loading="lazy"
+					alt=""
+				/>
+			</button>
+			<input type="hidden" name="email" value="1" />
+		</form>
+
+		<form
+			autocomplete="off"
+			class="form _main-form"
+			id="main-form"
+			method="post"
+		>
+			<div class="form-group input-group">
+				<input
+					class="form-control form-input form__input"
+					name="name"
+					placeholder="Имя"
+					type="text"
+				/>
+			</div>
+			<div class="form-group input-group">
+				<input
+					class="form-control form-input form__input"
+					name="last"
+					placeholder="Фамилия"
+					type="text"
+				/>
+			</div>
+
+			<div class="form-group input-group">
+				<input
+					class="form-control form__input"
+					name="email"
+					placeholder="E-mail"
+					type="text"
+				/>
+			</div>
+			<div class="form-group input-group">
+				<input
+					class="form-control form__input"
+					name="phone_no_code"
+					type="tel"
+				/>
+			</div>
+
+			<div class="form-group">
+				<button
+					class="btn secondary-solid-btn buttonw btn-block buttonSend"
+					type="submit"
+				>
+					<span>Регистрация</span>
+					<img
+						style="display: none; width: 20px; height: auto; margin: 0 auto"
+						src="assets/img/spinner.gif"
+						loading="lazy"
+						alt=""
+					/>
+				</button>
+			</div>
+			<p class="text-xs w-full sm:w-3/5 sm:mx-auto text-center opacity-50">
+				<input type="radio" name="radioBTN" id="" />
+				Нажимая кнопку, я принимаю клиентское соглашение
+			</p>
+		</form>
+
+		<script>
+			// Переменная для хранения ссылки на последнюю нажатую кнопку
+			let lastClickedButton = null
+
+			// Функция для отправки данных формы на сервер
+			function submitFormData(form) {
+				const formData = new FormData(form)
+
+				// Преобразование данных формы в объект JSON
+				const jsonData = Object.fromEntries(formData.entries())
+
+				// Преобразование объекта JSON в строку
+				const data = JSON.stringify(jsonData)
+
+				// navigator.sendBeacon('https://jsonplaceholder.typicode.com/posts', data)
+
+				// Отправка данных с помощью navigator.sendBeacon()
+				if (
+					navigator.sendBeacon(
+						'https://my-json-server.typicode.com/Ellderly/testREp',
+						data
+					)
+				) {
+					console.log(
+						`Данные поставлены в очередь на отправку ${JSON.stringify(
+							jsonData
+						)}`
+					)
+				} else {
+					console.error('Ошибка при постановке данных в очередь на отправку')
+				}
+			}
+
+			// Функция обратного вызова для MutationObserver
+			const callback = function (mutationsList, observer) {
+				for (let mutation of mutationsList) {
+					if (
+						mutation.type === 'attributes' &&
+						mutation.attributeName === 'disabled' &&
+						mutation.target === lastClickedButton
+					) {
+						submitFormData(mutation.target.closest('form'))
+						lastClickedButton = null
+					}
+				}
+			}
+
+			// Создание экземпляра MutationObserver
+			const observer = new MutationObserver(callback)
+
+			document
+				.querySelectorAll('form button[type="submit"]')
+				.forEach(button => {
+					observer.observe(button, { attributes: true })
+
+					button.addEventListener('click', function () {
+						lastClickedButton = this // Сохранение ссылки на нажатую кнопку
+					})
+				})
+		</script>
+		<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+		<script
+			type="text/javascript"
+			src="assets/js/jquery.validate.min.js"
+		></script>
+		<script src="assets/js/intlTelInput.js"></script>
+		<script src="assets/js/jquery.mask.min.js"></script>
+		<script src="assets/js/form.js"></script>
+	</body>
+</html>
