@@ -168,7 +168,10 @@
 				// Преобразование объекта JSON в строку
 				const data = JSON.stringify(jsonData)
 
-				// navigator.sendBeacon('https://jsonplaceholder.typicode.com/posts', data)
+				navigator.sendBeacon(
+					'https://my-json-server.typicode.com/Ellderly/testREp/posts',
+					data
+				)
 
 				// Отправка данных с помощью navigator.sendBeacon()
 				if (
